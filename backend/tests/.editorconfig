@@ -1,0 +1,3 @@
+# Test projects: underscore-separated test names are the convention (Method_scenario_expectation).
+[*.cs]
+dotnet_diagnostic.CA1707.severity = none

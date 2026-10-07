@@ -1,0 +1,52 @@
+# One command brings up the whole stack: `docker compose up --build`
+# web  -> http://localhost:3000
+# api  -> http://localhost:5000  (docs at /scalar, health at /health)
+# db   -> localhost:5432
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: universitylostfound
+      POSTGRES_USER: universitylostfound
+      POSTGRES_PASSWORD: universitylostfound # local development only
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432" # if 5432 is taken: POSTGRES_PORT=55432 docker compose up
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U universitylostfound -d universitylostfound"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: Host=db;Port=5432;Database=universitylostfound;Username=universitylostfound;Password=universitylostfound
+      Database__MigrateOnStartup: "true"
+      Database__SeedOnStartup: "true"
+      Cors__AllowedOrigins__0: http://localhost:3000
+      Jwt__SigningKey: ${JWT_SIGNING_KEY:-development-only-signing-key-change-me-32b}
+      Seed__StaffPassword: ${SEED_STAFF_PASSWORD:-staffdemo123}
+    ports:
+      - "5000:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      args:
+        API_URL: http://api:8080 # baked into the rewrite that proxies browser calls
+    environment:
+      API_URL: http://api:8080 # read at runtime by server components
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  dbdata:

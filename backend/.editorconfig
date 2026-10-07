@@ -1,0 +1,31 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.{json,yml,yaml,props,targets,csproj,slnx}]
+indent_size = 2
+
+[*.cs]
+# Style rules enforced at build (EnforceCodeStyleInBuild) and by `dotnet format`
+dotnet_sort_system_directives_first = true
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_braces = true:warning
+csharp_style_var_for_built_in_types = false:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+dotnet_style_qualification_for_field = false:warning
+dotnet_diagnostic.IDE0005.severity = warning   # unnecessary using
+dotnet_diagnostic.IDE0055.severity = warning   # formatting
+dotnet_diagnostic.CA1062.severity = none       # validate args of public methods (noise for DTO-heavy code)
+dotnet_diagnostic.CA1848.severity = none       # LoggerMessage delegates (overkill for a small project)
+dotnet_diagnostic.CA2007.severity = none       # ConfigureAwait in app code
+
+# EF Core migrations are generated code: keep them out of style enforcement.
+[**/Migrations/**.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none
