@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  /* System font stack: nothing to download, native on every platform. The starter pointed
+     --font-sans at an undefined --font-geist-sans, so the body silently fell back to Arial. */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Palette lives in plain variables so the dark scheme below can swap them in one place. */
+  --color-page: var(--c-page);
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-ink-muted: var(--c-ink-muted);
+  --color-line: var(--c-line);
+  --color-accent: var(--c-accent);
+  --color-accent-soft: var(--c-accent-soft);
+  --color-brand: var(--c-brand);
+  --color-on-brand: var(--c-on-brand);
+  --color-cta: var(--c-cta);
+  --color-on-cta: var(--c-on-cta);
+  --color-error: var(--c-error);
+  --color-highlight: var(--c-highlight);
+}
+
+:root {
+  /* 60-30-10: light neutrals (page, surface) / deep green (header, hero) / amber (calls to action). */
+  --c-page: #f3f7f4; /* 60%: pale mint-white */
+  --c-surface: #ffffff;
+  --c-ink: #14231c; /* body text — 15.6:1 on page */
+  --c-ink-muted: #4a5a51; /* secondary text — 6.7:1 */
+  --c-line: #c9d5cd; /* rules and borders */
+  --c-accent: #1f4d3a; /* links, secondary button, focus — 9.4:1 on white */
+  --c-accent-soft: #e0eee6;
+  --c-brand: #173a2c; /* 30%: header and hero band */
+  --c-on-brand: #f4faf6; /* text on the band — 12.6:1 */
+  --c-cta: #f5b83d; /* 10%: primary button */
+  --c-on-cta: #173a2c; /* text on the button — 7.4:1 */
+  --c-error: #b10e1e; /* error text — 7.4:1 */
+  --c-highlight: #fff3b0; /* shared words */
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+}
+
+html {
+  color-scheme: light;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.4;
+}
+
+/* Words the two descriptions share, in the claim comparison. The colour repeats what the
+   "Shared words" list already says in text, so nothing is carried by colour alone. */
+mark {
+  background: var(--color-highlight);
+  color: inherit;
+  padding: 0 0.125rem;
+}
+
+/* Keyboard users must always see where they are. :focus-visible stays out of the way of
+   mouse clicks and only shows for keyboard and assistive navigation. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* The header band is dark in both schemes, so its focus ring uses the band's own light text colour. */
+header :where(a):focus-visible {
+  outline-color: var(--color-on-brand);
+}
+
+/* Three classes used in dozens of places. Plain CSS rather than @apply: the values come from
+   the same theme variables, and there is no build-time indirection to reason about. */
+.field-input {
+  width: 100%;
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 1rem;
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.field-input:hover {
+  border-color: var(--color-accent);
+}
+
+.button,
+.button-secondary {
+  display: inline-block;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.15rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid var(--color-accent);
+  transition:
+    background-color 0.15s,
+    transform 0.15s;
+}
+
+.button {
+  background: var(--color-cta);
+  border-color: var(--color-cta);
+  color: var(--color-on-cta);
+}
+
+.button-secondary {
+  background: var(--color-surface);
+  color: var(--color-accent);
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(0.95);
+  transform: translateY(-1px);
+}
+
+.button-secondary:hover:not(:disabled) {
+  background: var(--color-accent-soft);
+  transform: translateY(-1px);
+}
+
+.button:disabled,
+.button-secondary:disabled {
+  opacity: 0.5;
+}
+
+/* A white panel on the tinted page; used by lists and the home hero. */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: 0.75rem;
+}
+
+/* Dark band for the home hero; links and focus ring switch to the band's light text colour. */
+.hero {
+  background: var(--color-brand);
+  color: var(--color-on-brand);
+  border-radius: 0.75rem;
+}
+
+.hero :where(a):focus-visible {
+  outline-color: var(--color-on-brand);
+}
+
+.badge {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 0.05rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button-secondary {
+    transition: none;
+    transform: none;
+  }
+}
