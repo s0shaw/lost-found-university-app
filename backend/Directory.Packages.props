@@ -9,7 +9,7 @@
 
     <!-- Security -->
     <PackageVersion Include="BCrypt.Net-Next" Version="4.0.3" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.13" />
 
     <!-- Validation / logging / API docs -->
     <PackageVersion Include="FluentValidation" Version="12.1.1" />
