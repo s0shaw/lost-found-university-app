@@ -1,5 +1,5 @@
 # ---- build ----
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS build
 WORKDIR /src
 COPY nuget.config Directory.Build.props Directory.Packages.props UniversityLostFound.slnx .editorconfig ./
 COPY src/Domain/UniversityLostFound.Domain.csproj src/Domain/
