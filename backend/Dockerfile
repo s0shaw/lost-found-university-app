@@ -11,7 +11,7 @@ COPY src/ src/
 RUN dotnet publish src/Api/UniversityLostFound.Api.csproj -c Release -o /app/publish --no-restore
 
 # ---- runtime ----
-FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:11.0 AS runtime
 WORKDIR /app
 # Npgsql probes for Kerberos (GSSAPI) at startup; without this lib it logs a misleading error.
 RUN apt-get update && apt-get install -y --no-install-recommends libgssapi-krb5-2 && rm -rf /var/lib/apt/lists/*
